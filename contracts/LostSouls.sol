@@ -22,9 +22,8 @@ contract LostSouls is ERC721, Ownable {
         uint256 supply = totalSupply;
          for(uint256 i = 1; i <= num; i++) {
             _safeMint( msg.sender, supply + i );
-            supply += 1;
         }
-        totalSupply += supply;
+        totalSupply += supply + num;
     }
 
     function mintWithRegularMint(uint256 num) external payable onlyOwner {
@@ -34,6 +33,11 @@ contract LostSouls is ERC721, Ownable {
             supply += 1;
         }
         totalSupply += supply;
+    }
+
+    function mintWithoutLoop() external payable onlyOwner {
+        totalSupply += 1;
+        _mint( msg.sender, totalSupply);
     }
 
     function setBaseURI(string memory baseURI) public onlyOwner {
