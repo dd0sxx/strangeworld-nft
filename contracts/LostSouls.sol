@@ -18,10 +18,17 @@ contract LostSouls is ERC721, Ownable {
     }
 
 
-    function mint(uint256 num) external payable onlyOwner {
+    function mintWithSafeMint(uint256 num) external payable onlyOwner {
         uint256 supply = totalSupply;
          for(uint256 i = 1; i <= num; i++) {
             _safeMint( msg.sender, supply + i );
+        }
+    }
+
+    function mintWithRegularMint(uint256 num) external payable onlyOwner {
+        uint256 supply = totalSupply;
+         for(uint256 i = 1; i <= num; i++) {
+            _mint( msg.sender, supply + i );
         }
     }
 
