@@ -20,14 +20,14 @@ describe("LostSouls", function () {
 
   it("Mint and only to the owner", async function () {
     expect(await lostSouls.totalSupply()).to.deep.equal(0);
-    await lostSouls.mintWithSafeMint(3)
+    await lostSouls.mint(3)
     expect(await lostSouls.totalSupply()).to.deep.equal(3);
     expect(await lostSouls.balanceOf(alice.address)).to.deep.equal(3);
-    expect(lostSouls.connect(bob).mintWithSafeMint(3)).to.be.revertedWith("")
+    expect(lostSouls.connect(bob).mint(3)).to.be.revertedWith("")
   });
 
   it("should be 1 indexed", async function () {
-    await lostSouls.mintWithSafeMint(3)
+    await lostSouls.mint(3)
     expect(await lostSouls.ownerOf(1)).to.deep.equal(alice.address)
     expect(await lostSouls.ownerOf(2)).to.deep.equal(alice.address)
     expect(await lostSouls.ownerOf(3)).to.deep.equal(alice.address)
@@ -35,19 +35,19 @@ describe("LostSouls", function () {
     expect(lostSouls.ownerOf(4)).to.be.revertedWith("")
   })
 
-  it("mint with safe mint", async function () {
-    await lostSouls.mintWithSafeMint(3)
-  })
+  //testing gas
 
-  it("mint with reg mint", async function () {
-    await lostSouls.mintWithRegularMint(3)
+  it("mint 1", async function () {
+    await lostSouls.mint(1)
   })
-
-  it("mint without loop", async function () {
-    await lostSouls.mintWithoutLoop()
-    await lostSouls.mintWithoutLoop()
-    await lostSouls.mintWithoutLoop()
+  it("mint 2", async function () {
+    await lostSouls.mint(2)
   })
-
+  it("mint 3", async function () {
+    await lostSouls.mint(3)
+  })
+  it("mint 10", async function () {
+    await lostSouls.mint(10)
+  })
 
 });
