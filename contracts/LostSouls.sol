@@ -4,11 +4,36 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract LostSouls is ERC721 {
+contract LostSouls is ERC721, Ownable {
 
-    constructor() ERC721('Lost Souls', 'LOST_SOULS') {
-       
+    using Strings for uint256;
+
+    string private _baseTokenURI;
+    uint256 public totalSupply;
+
+    constructor(string memory baseURI) ERC721('Lost Souls', 'LOST_SOULS') {
+       setBaseURI(baseURI);
+    }
+
+
+    function mint(uint256 num) external payable onlyOwner {
+        uint256 supply = totalSupply;
+         for(uint256 i = 1; i <= num; i++) {
+            _safeMint( msg.sender, supply + i );
+        }
+    }
+
+    function setBaseURI(string memory baseURI) public onlyOwner {
+        _baseTokenURI = baseURI;
+    }
+
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+        string memory json = ".json";
+        string memory baseURI = _baseURI();
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), json)) : "";
     }
 
 }
