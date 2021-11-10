@@ -49,5 +49,8 @@ describe("LostSouls", function () {
   it("mint 10", async function () {
     await lostSouls.mint(10)
   })
+  it("change base URI", async function () {
+    await lostSouls.setBaseURI("ipfs://QmUy8CSeFru4dvU1ckaCJ6fkbVXayxEvjQzifW6zqUbBxT/")
+  })
 
 });
