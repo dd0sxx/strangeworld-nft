@@ -13,7 +13,7 @@ contract LostSouls is ERC721, Ownable {
     string private _baseTokenURI;
     uint256 public totalSupply;
 
-    constructor(string memory baseURI) ERC721('Lost Souls', 'LOST_SOULS') {
+    constructor(string memory baseURI) ERC721('Lost Souls', 'SOULS') {
        setBaseURI(baseURI);
     }
 
@@ -22,14 +22,18 @@ contract LostSouls is ERC721, Ownable {
         uint256 supply = totalSupply;
          for(uint256 i = 1; i <= num; i++) {
             _safeMint( msg.sender, supply + i );
+            supply += 1;
         }
+        totalSupply += supply;
     }
 
     function mintWithRegularMint(uint256 num) external payable onlyOwner {
         uint256 supply = totalSupply;
          for(uint256 i = 1; i <= num; i++) {
             _mint( msg.sender, supply + i );
+            supply += 1;
         }
+        totalSupply += supply;
     }
 
     function setBaseURI(string memory baseURI) public onlyOwner {

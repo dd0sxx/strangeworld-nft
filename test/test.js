@@ -1,18 +1,27 @@
 const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("LostSouls", function () {
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  let lostSouls, alice, bob
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  beforeEach(async () => {
+    [a, b] = await ethers.getSigners()
+    alice = a
+    bob = b
+    const LostSouls = await ethers.getContractFactory("LostSouls");
+    lostSouls = await LostSouls.deploy("");
+    await lostSouls.deployed();
+  })
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+  it("Should compile and deploy", async function () {
+    expect(await lostSouls).to.not.equal(undefined || null);
+  });
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+  it("Mint and only to the owner", async function () {
+    expect(await lostSouls.totalSupply()).to.deep.equal(0);
+    await lostSouls.mintWithSafeMint(3)
+    expect(await lostSouls.totalSupply()).to.deep.equal(3);
+    expect(lostSouls.connect(bob).mintWithSafeMint(3)).to.be.revertedWith("")
   });
 });
